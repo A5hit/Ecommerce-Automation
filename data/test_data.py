@@ -24,16 +24,9 @@ class HomePageLocators:
         return self.page.get_by_text("Tech Add-ons", exact=True)
 
     @property
-    def product_listing(self):
+    def layout_product_card(self):
         return self.page.locator("//picture[@class='ng-star-inserted']//img[@alt='Airtag Cases']")
 
-    @property
-    def add_to_cart_btn(self):
-        return self.page.get_by_role("button", name="Add to Cart")
-
-    @property
-    def search_input(self):
-        return self.page.get_by_placeholder("Search products")
 
 class ListingPageLocators:
     """Listing semantic locators"""
@@ -41,13 +34,12 @@ class ListingPageLocators:
         self.page = page
 
     @property
-    def product_listing(self):
+    def product_listing_title(self):
         return self.page.locator("h1.listing-page-title")
 
     @property
     def listing_product_card(self):
         return self.page.locator("ul.products-result").locator("li")
-
 
 class ProductDetailPageLocators:
     """Product detail semantic locators"""
@@ -64,12 +56,15 @@ class ProductDetailPageLocators:
 
     @property
     def add_to_cart_btn(self):
-        return self.page.locator("p.desc__price.ng-star-inserted")
+        return self.page.locator("button").filter(has_text="ADD TO CART").first()
 
     @property
     def quick_sell_popup(self):
         return self.page.locator("button").filter(has_text="GO TO CART").last()
 
+    @property
+    def go_to_cart_btn(self):
+        return self.page.locator('button').filter(has_text='GO TO CART').first()
 
 class CartPageLocators:
     """CartPage semantic locators"""
@@ -77,16 +72,23 @@ class CartPageLocators:
         self.page = page
 
     @property
+    def cart_page_title(self):
+        return self.page.get_by_role("heading", name="SHOPPING BAG")
+
+    @property
     def cart_product_card(self):
-        return self.page.locator("div.bag-page-column-desktop").locator("div").nth(0)
+        xpath_loc = "//div[@class='description']"
+        return self.page.locator(xpath_loc)
 
     @property
     def cart_product_title(self):
-        return self.page.get_by_text("Cloud Grey Veko AirTag Case", exact=True)
+        xpath_loc = "/div/p[@ngstyle.xs='font-size: 13px']"
+        return self.cart_product_card.locator(xpath_loc)
 
     @property
     def cart_product_price(self):
-        return self.page.get_by_text("₹499 ₹999")
+        xpath_loc = "/div/p[contains(.,'₹')]"
+        return self.cart_product_card.locator(xpath_loc)
 
     @property
     def cart_grand_total(self):
@@ -95,7 +97,6 @@ class CartPageLocators:
     @property
     def checkout_btn(self):
         return self.page.get_by_role("button", name="CHECKOUT")
-
 
 class CheckoutPageLocators:
     """Checkout semantic locators"""
